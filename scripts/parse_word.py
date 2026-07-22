@@ -185,8 +185,13 @@ def parse_font(run):
         result['color'] = color
     
     # 高亮
-    if font.highlight_color:
-        result['highlight'] = str(font.highlight_color)
+    try:
+        highlight = font.highlight_color
+        if highlight:
+            result['highlight'] = str(highlight)
+    except (ValueError, AttributeError):
+        # 某些 docx 文件包含非法的 highlight 值（如 'none'），跳过
+        pass
     
     # 上标/下标
     if font.superscript:
